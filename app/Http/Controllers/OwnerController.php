@@ -26,7 +26,7 @@ class OwnerController extends Controller
     public function listAnimals($id){
         $owner=Owner::findOrFail($id);
         if($owner){
-            return response()->sucess($owner->animals());
+            return response()->sucess($owner->animals);
         }else{
             $data = "Owner not found";
             return response()->error($data,400);
@@ -44,19 +44,23 @@ class OwnerController extends Controller
 
     public function update(Request $request,$id){
         $owner=Owner::findOrFail($id);
-        if ($request->name)
-            $owner->name=$request->name;
-        if ($request->gender)        
-            $owner->gender=$request->gender;
-        if ($request->phone_number)                
-            $owner->phone_number=$request->phone_number;
-        if ($request->address)        
-            $owner->address=$request->address;
-        if ($request->occupation)        
-            $owner->occupation=$request->occupation;
-        $owner->save();
-        
-        return response()->json([$owner]);
+        if($owner){
+            if ($request->name)
+                $owner->name=$request->name;
+            if ($request->gender)        
+                $owner->gender=$request->gender;
+            if ($request->phone_number)                
+                $owner->phone_number=$request->phone_number;
+            if ($request->address)        
+                $owner->address=$request->address;
+            if ($request->occupation)        
+                $owner->occupation=$request->occupation;
+            $owner->save();
+            return response()->sucess($animal);
+        }else{
+            $data = "not found";
+            return response()->error($data,400);
+        }
     }
 
 

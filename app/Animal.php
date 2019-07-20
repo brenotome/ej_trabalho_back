@@ -10,10 +10,6 @@ class Animal extends Model
         return $this->belongsTo('App\Owner');
     }
 
-    public function specie (){
-        return $this->belongsTo('App\Specie');
-    }
-
     public function vets (){
         return $this->belongsToMany('App\Vet');
     }

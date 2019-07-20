@@ -22,14 +22,12 @@ class CreateAnimalsTable extends Migration
             $table->decimal('size',8,2);
             $table->string('color',8,2);
             $table->text('description');
-            $table->unsignedBigInteger('specie_id')->nullable();
             $table->unsignedBigInteger('owner_id')->nullable();
             
         });
         //fk
         
         Schema::table('animals',function (Blueprint $table){
-            $table->foreign('specie_id')->references('id')->on('species')->onDelete('cascade');
             $table->foreign('owner_id')->references('id')->on('owners')->onDelete('cascade');
         });
         

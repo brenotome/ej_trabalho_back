@@ -36,20 +36,8 @@ class VetController extends Controller
 
     public function listAnimals($id){
         $vet=Vet::findOrFail($id);
-        return response()->json([$vet->animals()]);
-
-        // if($vet){
-        //     return response()->sucess($vet->animals());
-        // }else{
-        //     $data = "not found";
-        //     return response()->error($data,400);
-        // }
-    }
-
-    public function listSpecialities($id){
-        $vet=Vet::findOrFail($id);
         if($vet){
-            return response()->sucess($vet->specialities());
+            return response()->sucess($vet->animals);
         }else{
             $data = "not found";
             return response()->error($data,400);
@@ -58,39 +46,32 @@ class VetController extends Controller
 
     public function update(Request $request,$id){
         $vet=Vet::findOrFail($id);
-        if ($request->name)
-            $vet->name = $request->name;
-        if($request->gender)
-            $vet->gender=$request->gender;
-        if($request->phone_number)
-            $vet->phone_number=$request->phone_number;
-        if($request->address)
-            $vet->address=$request->address;
-        if($request->age)
-            $vet->age=$request->age;
-        $vet->save();
-        
-        return response()->json([$vet]);
+        if ($vet) {
+            if ($request->name)
+                $vet->name = $request->name;
+            if($request->gender)
+                $vet->gender=$request->gender;
+            if($request->phone_number)
+                $vet->phone_number=$request->phone_number;
+            if($request->address)
+                $vet->address=$request->address;
+            if($request->age)
+                $vet->age=$request->age;
+            $vet->save();
+            return response()->sucess($vet);
+        }else{
+            $data = "Vet not found";
+            return response()->error($data,400);
+        }
     }
+        
 
     public function addAnimal(Request $request,$id){
         $vet=Vet::findOrFail($id);
         $animal=Animal::findOrFail($request->animal_id);
         if($animal && $vet){
             $vet->animals()->attach($animal);
-            return response()->sucess($vet); 
-        }else{
-            $data = "not found";
-            return response()->error($data,400);
-        }
-    }
-
-    public function addSpeciality(Request $request,$id){
-        $vet=Vet::findOrFail($id);
-        $speciality=Speciality::findOrFail($request->speciality_id);
-        if($vet && $speciality){
-            $vet->specialities()->attach($speciality);
-            return response()->sucess($vet); 
+            return response()->sucess($vet->animals); 
         }else{
             $data = "not found";
             return response()->error($data,400);
@@ -106,18 +87,7 @@ class VetController extends Controller
         $vet=Vet::findOrFail($id);
         if($vet){
             $vet->animals()->detach($request->animal_id);
-            return response()->sucess($vet); 
-        }else{
-            $data = "not found";
-            return response()->error($data,400);
-        }
-    }
-
-    public function deleteSpeciality(Request $request,$id){
-        $vet=Vet::findOrFail($id);
-        if($vet){
-            $vet->specialities()->detach($request->speciality_id);
-            return response()->sucess($vet); 
+            return response()->sucess('deleted'); 
         }else{
             $data = "not found";
             return response()->error($data,400);

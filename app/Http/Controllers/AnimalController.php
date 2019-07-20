@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Animal;
 use App\Owner;
-use App\Specie;
+use App\Vet;
 
 
 class AnimalController extends Controller
@@ -39,7 +39,7 @@ class AnimalController extends Controller
     public function listVets($id){
         $animal=Animal::findOrFail($id);
         if($animal){
-            return response()->sucess($animal->vets());
+            return response()->sucess($animal->vets);
         }else{
             $data = "Animal not found";
             return response()->error($data,400);
@@ -51,7 +51,8 @@ class AnimalController extends Controller
         $vet=Vet::findOrFail($request->vet_id);
         if($animal && $vet){
             $animal->vets()->attach($vet);
-            return response()->sucess($animal); 
+            // $animal->save();
+            return response()->sucess($animal->vets); 
         }else{
             $data = "not found";
             return response()->error($data,400);
@@ -62,19 +63,8 @@ class AnimalController extends Controller
         $animal=Animal::findOrFail($id);
         $owner=Owner::findOrFail($request->owner_id);
         if($animal && $owner){
-            $animal->owner()->attach($owner);
-            return response()->sucess($animal); 
-        }else{
-            $data = "not found";
-            return response()->error($data,400);
-        }
-    }
-
-    public function updateSpecie(Request $request,$id){
-        $animal=Animal::findOrFail($id);
-        $specie=Specie::findOrFail($request->specie_id);
-        if($animal && $specie){
-            $animal->specie()->attach($specie);
+            $animal->owner()->associate($owner);
+            $animal->save();
             return response()->sucess($animal); 
         }else{
             $data = "not found";
@@ -115,7 +105,7 @@ class AnimalController extends Controller
     public function deleteOwner(Request $request,$id){
         $animal=Animal::findOrFail($id);
         if($animal){
-            $animal->owner()->detach($request->owner_id);
+            $animal->owner()->dissociate($request->owner_id);
             return response()->sucess($animal); 
         }else{
             $data = "not found";
@@ -123,20 +113,10 @@ class AnimalController extends Controller
         }
     }
 
-    public function deleteSpecie(Request $request,$id){
-        $animal=Animal::findOrFail($id);
-        if($animal){
-            $animal->specie()->detach($request->specie_id);
-            return response()->sucess($animal); 
-        }else{
-            $data = "not found";
-            return response()->error($data,400);
-        }
-    }
     public function deleteVet(Request $request,$id){
         $animal=Animal::findOrFail($id);
         if($animal){
-            $animal->vet()->detach($request->vet_id);
+            $animal->vets()->detach($request->vet_id);
             return response()->sucess($animal); 
         }else{
             $data = "not found";
