@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSpecialitieVetTable extends Migration
+class CreateSpecialityVetTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateSpecialitieVetTable extends Migration
      */
     public function up()
     {
-        Schema::create('specialitie_vet', function (Blueprint $table) {
+        Schema::create('speciality_vet', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
-            $table->unsignedBigInteger('specialitie_id')->nullable();
+            $table->unsignedBigInteger('speciality_id')->nullable();
             $table->unsignedBigInteger('vet_id')->nullable();
             //fk
-            $table->foreign('specialitie_id')->references('id')->on('specialities')->onDelete('set null');
+            $table->foreign('speciality_id')->references('id')->on('specialities')->onDelete('set null');
             $table->foreign('vet_id')->references('id')->on('vets')->onDelete('set null');
         });
     }

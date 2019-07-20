@@ -16,11 +16,10 @@ class CreateOwnersTable extends Migration
         Schema::create('owners', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
-            $table->softDeletes();            
             $table->string('name');
             $table->string('gender');
             $table->string('phone_number');
-            $table->string('occuparion');
+            $table->string('occupation');
             $table->text('address');
         });
     }

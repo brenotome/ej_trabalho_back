@@ -16,7 +16,7 @@ class CreateVetsTable extends Migration
         Schema::create('vets', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
-            $table->softDeletes();            
+            // $table->softDeletes();            
             $table->string('name');
             $table->string('gender')->nullable();
             $table->string('phone_number')->nullable();

@@ -18,17 +18,21 @@ class CreateAnimalsTable extends Migration
             $table->timestamps();
             // $table->softDeletes();            
             $table->string('name');
-            $table->unsignedBigInteger('specie_id')->nullable();
-            $table->unsignedBigInteger('owner_id')->nullable();
             $table->decimal('weight',8,2);
             $table->decimal('size',8,2);
+            $table->string('color',8,2);
             $table->text('description');
-            //fk
+            $table->unsignedBigInteger('specie_id')->nullable();
+            $table->unsignedBigInteger('owner_id')->nullable();
+            
         });
-        Schema::table('animals', function (Blueprint $table) {
-            $table->foreign('owner_id')->references('id')->on('owners')->onDelete('cascade');
+        //fk
+        
+        Schema::table('animals',function (Blueprint $table){
             $table->foreign('specie_id')->references('id')->on('species')->onDelete('cascade');
+            $table->foreign('owner_id')->references('id')->on('owners')->onDelete('cascade');
         });
+        
     }
 
     /**
